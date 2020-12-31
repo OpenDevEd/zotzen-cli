@@ -1,3 +1,4 @@
+
 const ArgumentParser = require('argparse').ArgumentParser;
 const childProcess = require('child_process');
 const fs = require('fs');
@@ -5,6 +6,107 @@ const opn = require('opn');
 const path = require('path');
 const prompt = require('prompt');
 const getPrompt = require('util').promisify(prompt.get).bind(prompt);
+// TODO
+// require('zotero-api-lib')
+// require('zenodo-api-lib')
+
+/*
+
+zotzen install
+zotzen create [previously 'new']
+zotzen link
+zotzen push
+
+// ---------------------------------------------------------
+zotzen -h 
+-h, --help Show this help message and exit.
+-v, --verbose 
+--debug Enable debug logging
+--zenodoconfig CONFIGFILE
+--zoteroconfig CONFIGFILE
+
+--show Show the zotero, zenodo item information
+--open Open the zotero and zenodo link after creation
+--dump
+
+create  Create a new pair of Zotero/Zenodo entries.
+init    install Install the config for Zotero and Zenodo.
+link
+push
+
+// ---------------------------------------------------------
+zotzen create -h 
+
+zotzen create [--title ... ... --json ...] --group ...
+Create a new zotero and a new zenodo record and link them.
+
+TODO: This option should have the same option as 'zenodo-cli create', e.g.
+--title TITLE Title of the new entries (for --new).
+--template TEMPLATE Path of the template to be used for creating Zenodo record.
+--json JSON A Zotero or Zenodo json file to be used for the Zotero entry
+
+Other than zenodo-cli, there is one more option:
+--group GROUP Group ID for which the new item Zotero is to be created
+
+
+// ---------------------------------------------------------
+zotzen link -h
+
+zotzen link zotero_id --newdoi
+zotzen link zotero_id zenodo_id
+
+Link an existing zotero item to a new zenodo record or link it with with an existing zenodo record in the DOI. 
+
+--newdoi Generate a DOI for an existing Zotero item.
+
+
+Use cases:
+1. You have a zotero item already, and you want to get a DOI for it. (--newdoi)
+2. You have a zotero item already and you have a zenodo item already, and you want to use the existing DOI for the zotero item.
+
+ERROR MESSAGES:
+
+(1) Running "zotzen link zotero_id --newdoi" where zotero_id already has a DOI, results in error message:
+
+The Zotero item has a Zenodo DOI already. If you really want to link
+this to a new record in Zenodo, please manually remove the DOI
+first. You can use the --open option to open the Zotero/Zenodo items
+to make adjustments.)
+
+(2a) Running "zotzen link zotero_id zenodo_id" where zotero_id already
+has a DOI (which is different from zenodo_id), results in error
+message above.  
+
+(2b) If the Zenodo item is linked against a different Zotero item,
+then:
+
+The Zenodo item is already linked with a different Zotero item. Do you
+want to proceed? y/n?
+
+(3) Running "zotzen link zotero_id zenodo_id" where zotero_id already
+has a DOI which MATCHES zenodo_id, and where zenodo_id is already
+linked to the same zotero item:
+
+The Zotero item and the Zenodo item are already linked.
+
+// ---------------------------------------------------------
+zotzen push -h
+
+zotzen push zotero_id
+--metadata      Sync metadata from zotero to zenodo. [Previously --sync]
+--attachments   Push Zotero attachments to Zenodo. [Rename to --push]
+--type TYPE     Type of the attachments to be pushed (e.g., PDF, DOCX, etc)
+--publish       Publish zenodo record. One or more positional arguments (zotero items)
+
+This option requires items to be linked already (e.g., using zotzen link).
+
+Error message if the item is unlinked: The Zotero item XYZ is not linked to a Zenodo item. Please link it first:
+
+zotzen link XYZ --newdoi
+zotzen link XYZ -123
+
+*/
+
 
 const parser = new ArgumentParser({
   version: '1.0.0',
@@ -12,71 +114,110 @@ const parser = new ArgumentParser({
   description: 'ZotZen utility. Main modes are --new or provide a Zotero item.',
 });
 
-parser.addArgument('--new', {
-  action: 'storeTrue',
-  help: 'Create a new pair of Zotero/Zenodo entries.',
+
+
+/*
+New parser
+*/
+
+const parser = new argparse.ArgumentParser({ "description": "Zenodo command line utility" });
+parser.add_argument(
+  "--zoteroconfig", {
+    "action": "store",
+    "default": "zotero-cli.toml",
+    "help": "Config file with API key. By default config.json then ~/.config/zotero-cli/zotero-cli.toml are used if no config is provided."
+  });
+parser.add_argument(
+  "--verbose", {
+    "action": "store_false",
+    "help": "Run in verbose mode"
+  });
+parser.addArgument(
+  '--debug', {
+    action: 'storeTrue',
+    help: 'Enable debug logging',
+  });
+parser_create.addArgument(
+  '--show', {
+    action: 'storeTrue',
+    help: 'Show the Zotero and Zenodo item information',
+  });
+parser_create.addArgument(
+  '--open', {
+    action: 'storeTrue',
+    help:
+    'Open the Zotero and Zenodo link after creation (both on web).',
+  });
+parser_create.addArgument(
+  '--oapp', {
+    action: 'storeTrue',
+    help:
+    'Open the Zotero link (app) and the Zenodo link after creation (web).',
 });
-parser.addArgument('--title', {
-  help: 'Title of the new entries (for --new).',
+parser_create.add_argument(
+  "--dump", {
+    "action": "store_true",
+    "help": "Show json for list and for depositions after executing the command.",
+    "default": false
+  });
+
+const subparsers = parser.add_subparsers({ "help": "sub-command help" });
+const parser_create = subparsers.add_parser("create",
+  { "help": "Create a new pair of Zotero/Zenodo entries. Note: If you already have a Zotero item, use 'link' instead." });
+parser_create.addArgument('--title', {
+  help: 'Title of the new entry.',
 });
-parser.addArgument('--json', {
-  help: 'A Zotero json file to be used for the Zotero entry (for --new).',
+parser_create.addArgument('--json', {
+  help: 'A Zotero/Zenodo json file to be used for the new entry.',
 });
-parser.addArgument('--group', {
-  help: 'Group ID for which the new item Zotero is to be created (for --new).',
+parser_create.addArgument('--group', {
+  help: 'Group ID for which the new item Zotero is to be created. (Can be provided via Zotero config file.)',
 });
-parser.addArgument('zot', {
-  help: 'Zotero id of the item group_id:item_key or item_key',
-  nargs: '*',
-});
-parser.addArgument('--show', {
-  action: 'storeTrue',
-  help: 'Show the zotero, zenodo item information (for both --new and --zot).',
-});
-parser.addArgument('--open', {
-  action: 'storeTrue',
-  help:
-    'Open the zotero and zenodo link after creation (for both --new and --zot).',
-});
-parser.addArgument('--getdoi', {
-  action: 'storeTrue',
-  help: 'Generate a DOI for an existing Zotero item.',
-});
-parser.addArgument('--template', {
-  help: 'Path of the template to be used for creating Zenodo record.',
-});
-parser.addArgument('--zen', {
-  help: 'Zenodo record id of the item to be linked.',
-});
-parser.addArgument('--sync', {
+
+
+const parser_init = subparsers.add_parser(
+  "init",
+  {   "help": "Set up config files for Zotero/Zenodo in the default location." } );
+
+const parser_link = subparsers.add_parser(
+  "link", {
+    nargs: 1,
+    "help": "Get a DOI for a Zotero item or link a Zotero item to an existing Zenodo item. Provide the Zotero item as first argument."
+  });
+
+parser_link.addArgument(
+  '--newdoi', {
+    action: 'storeTrue',
+    help: 'Generate a DOI for an existing Zotero item.',
+  });
+
+parser_link.addArgument(
+  '--zenodo', {
+    nargs: 1,
+    help: 'Zenodo record id of the item to be linked.',
+  });
+
+const parser_push = subparsers.add_parser("init",
+  { "help": "Set up config files for Zotero/Zenodo in the default location." });
+
+parser_push.addArgument('--sync', {
   action: 'storeTrue',
   help: 'Sync metadata from zotero to zenodo.',
 });
-parser.addArgument('--push', {
+parser_push.addArgument('--push', {
   action: 'storeTrue',
   help: 'Push Zotero attachments to Zenodo.',
 });
-parser.addArgument('--type', {
+parser_push.addArgument('--type', {
   action: 'store',
   help: 'Type of the attachments to be pushed.',
   defaultValue: 'all',
 });
-parser.addArgument('--publish', {
+parser_push.addArgument('--publish', {
   action: 'storeTrue',
   help: 'Publish zenodo record.',
 });
-parser.addArgument('--install', {
-  action: 'storeTrue',
-  help: 'Install the config for Zotero and Zenodo.',
-});
-parser.addArgument('--debug', {
-  action: 'storeTrue',
-  help: 'Enable debug logging',
-});
-parser.addArgument('--link', {
-  action: 'storeTrue',
-  help: 'Link the zotero item to the zenodo record in the DOI.',
-});
+
 
 const args = parser.parseArgs();
 
@@ -100,6 +241,15 @@ function runCommandWithJsonFileInput(command, json, zotero = true) {
   fs.unlinkSync(zotero ? zoteroTmpFile : zenodoTmpFile);
   return response;
 }
+
+
+/*
+// TODO
+Replace runCommand with two functions:
+- zenodoAPI
+- zoteroAPI
+
+*/
 
 function runCommand(command, zotero = true) {
   if (args.debug) {
@@ -285,7 +435,7 @@ function syncErrors(doi, zenodoRawItem, zoteroSelectLink) {
   let error = false;
   if (!doi) {
     console.log(
-      'This item has no Zenodo DOI. You need to generate or link one first with --getdoi.'
+      'This item has no Zenodo DOI. You need to generate or link one first with --newdoi.'
     );
     error = true;
   } else if (!zenodoRawItem) {
@@ -408,9 +558,9 @@ async function zotzenGet(args) {
       );
 
       let zenodoRawItem = doi && zenodoGetRaw(doi);
-      if (args.getdoi) {
+      if (args.newdoi) {
         if (args.debug) {
-          console.log('DEBUG: zotzenGet, getdoi');
+          console.log('DEBUG: zotzenGet, newdoi');
         }
         if (doi) {
           console.log(`Item has DOI already: ${doi}`);
