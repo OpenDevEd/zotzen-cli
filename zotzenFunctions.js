@@ -5,6 +5,23 @@ const path = require('path');
 const prompt = require('prompt');
 const { zoteroApiPrefix, zoteroSelectPrefix, zoteroTmpFile, zenodoTmpFile, zoteroPrefix, zenodoPrefix, zenodoCreateRecordTemplatePath, getPrompt } = require("./zotzen");
 
+// TODO
+// require('zotero-api-lib')
+// require('zenodo-api-lib')
+/*
+const parser = new ArgumentParser({
+  version: '1.0.0',
+  addHelp: true,
+  description: 'ZotZen utility. Main modes are --new or provide a Zotero item.',
+});
+*/
+
+// const parser = new argparse.ArgumentParser({ "description": "Zenodo command line utility" });
+
+/*
+New parser
+*/
+
 
 
 async function zotzenInit(args) {
