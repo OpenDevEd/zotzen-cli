@@ -186,8 +186,6 @@ function getArguments() {
   return parser.parse_args();
 }
 
-const args = getArguments();
-
 // TODO: These constants need to be replaced with calls to the API
 const zoteroPrefix = 'node bin/zotero-cli.js';
 const zenodoPrefix = 'python zenodo-cli.py';
@@ -202,6 +200,7 @@ const zenodoCreateRecordTemplatePath = 'zenodo-cli/template.json';
 
 // --- main ---
 try {
+  const args = getArguments();
   if (args.func) {
     args.func(args)
   } else {
