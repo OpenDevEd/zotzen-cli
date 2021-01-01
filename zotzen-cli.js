@@ -11,7 +11,7 @@ const = require('opn');
 const = require('path');
 */
 const prompt = require('prompt');
-const { zotzenInit, zotzenCreate, zotzenLink, zotzenPush } = require("./zotzen-functions");
+const { zotzenInit, zotzenCreate, zotzenLink, zotzenPush } = require("./zotzen-lib");
 const getPrompt = require('util').promisify(prompt.get).bind(prompt);
 exports.getPrompt = getPrompt;
 
