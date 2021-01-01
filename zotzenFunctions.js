@@ -3,7 +3,7 @@ const fs = require('fs');
 const opn = require('opn');
 const path = require('path');
 const prompt = require('prompt');
-const { zoteroApiPrefix, zoteroSelectPrefix, zoteroTmpFile, zenodoTmpFile, zoteroPrefix, zenodoPrefix, zenodoCreateRecordTemplatePath, getPrompt } = require("./zotzen-cli");
+const { zoteroApiPrefix, zoteroSelectPrefix, zoteroTmpFile, zenodoTmpFile, zoteroPrefix, zenodoPrefix, zenodoCreateRecordTemplatePath, getPrompt } = require("./zotzen");
 
 // TODO
 // require('zotero-api-lib')
