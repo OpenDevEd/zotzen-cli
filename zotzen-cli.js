@@ -3,17 +3,15 @@
 // const ArgumentParser = require('argparse').ArgumentParser;
 // import * as argparse from 'argparse';
 const { ArgumentParser } = require('argparse');
-const { version } = require('./package.json');
-/* 
-const = require('child_process');
-const = require('fs');
-const = require('opn');
-const = require('path');
-*/
-const prompt = require('prompt');
-const { zotzenInit, zotzenCreate, zotzenLink, zotzenPush } = require("./zotzen-lib");
-const getPrompt = require('util').promisify(prompt.get).bind(prompt);
-exports.getPrompt = getPrompt;
+
+const zotzenLib = require('zotzen-lib')
+// import { zotzen-lib } from 'zotzen-lib';
+
+let myarg = ["a"]
+console.log(JSON.stringify(zotzenLib.create(myarg)))
+
+
+
 
 function getArguments() {
   const parser = new ArgumentParser({ "description": "Zotzen command line utility. Move data and files from Zotero to Zenodo." });
