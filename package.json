@@ -1,11 +1,11 @@
 {
-  "name": "zotzen",
+  "name": "zotzen-cli",
   "version": "1.0.0",
-  "description": "Command line utility to go from Zotero to Zenodo",
-  "main": "zotzen.js",
+  "description": "Command line utility to move data between Zotero and Zenodo",
+  "main": "zotzen-cli.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node zotzen.js"
+    "start": "node zotzen-cli.js"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,7 @@
     "argparse": "^2.0.1",
     "axios": "^0.21.1",
     "opn": "^6.0.0",
-    "prompt": "^1.0.0"
+    "prompt": "^1.0.0",
+    "zotzen-lib": "^1.0.0"
   }
 }
