@@ -205,28 +205,22 @@ parser_create.addArgument('--group', {
 
 const parser_link = subparsers.add_parser(
   "link", {
-    "help": "Get a DOI for a Zotero item or link a Zotero item to an existing Zenodo item. Provide the Zotero item as first argument."
+    "help": "Link Zotero item with a Zenodo item, or generate a missing item."
   });
 parser_link.add_argument(
   "id", {
-    "nargs": 1
-  });
-parser_link.addArgument(
-  '--newdoi', {
-    "action": 'storeTrue',
-    "help": 'Generate a DOI for an existing Zotero item.',
-  });
-parser_link.addArgument(
-  '--zenodo', {
-    "nargs": 1,
-    "help": 'Zenodo record id of the item to be linked.',
+    "nargs": 2,
+    "help": "Link Zotero item with a Zenodo item, or generate a missing item. Provide one/no Zotero item and provide one/no Zenodo item. Items should be of the format zotero://... and a Zenodo DOI or https://zenodo.org/... url."
   });
 
-const parser_push = subparsers.add_parser("push",
-  { "help": "Move data from Zotero to Zenodo." });
+const parser_push = subparsers.add_parser(
+  "push", {
+    "help": "Move/synchronise Zotero data to Zenodo."
+  });
 parser_push.add_argument(
   "id", {
-    "nargs": "*"
+    "nargs": "*",
+    "help": "Move/synchronise Zotero data to Zenodo. Provide one or more Zotero ids."
   });
 parser_push.addArgument(
   '--sync', {
