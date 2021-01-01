@@ -5,7 +5,7 @@
 const { ArgumentParser } = require('argparse');
 
 const zotzenLib = require('zotzen-lib')
-// import { zotzen-lib } from 'zotzen-lib';
+//import * as zotzenLib from 'zotzen-lib';
 
 let myarg = ["a"]
 console.log(JSON.stringify(zotzenLib.create(myarg)))
