@@ -1,20 +1,15 @@
 #!/usr/bin/env node
 
-// const ArgumentParser = require('argparse').ArgumentParser;
-// import * as argparse from 'argparse';
 const { ArgumentParser } = require('argparse');
 
 // PRODUCTION: Load library
-//const zotzenlib = require("zotzen-lib");
+const zotzenlib = require("zotzen-lib");
 // TESTING: Load locally for testing
-const zotzenlib = require("../zotzen-lib/index");
-
-//const zotzenLib = require('zotzen-lib')
-//import * as zotzenLib from 'zotzen-lib';
+//const zotzenlib = require("../zotzen-lib/index");
 
 const { 
   zotzenInit,
- } = require("./zotzen-lib");
+ } = require("./zotzen-helper");
 
 
 function getArguments() {
@@ -178,31 +173,8 @@ function getArguments() {
   return parser.parse_args();
 }
 
-// TODO: These constants need to be replaced with calls to the API
-/*
-const zoteroPrefix = 'node bin/zotero-cli.js';
-exports.zoteroPrefix = zoteroPrefix;
-const zenodoPrefix = 'python zenodo-cli.py';
-exports.zenodoPrefix = zenodoPrefix;
-const zoteroSelectPrefix = 'zotero://select';
-exports.zoteroSelectPrefix = zoteroSelectPrefix;
-const zoteroApiPrefix = 'https://api.zotero.org';
-exports.zoteroApiPrefix = zoteroApiPrefix;
-const zoteroTmpFile = 'zotero-cli/tmp';
-exports.zoteroTmpFile = zoteroTmpFile;
-const zenodoTmpFile = 'zenodo-cli/tmp';
-exports.zenodoTmpFile = zenodoTmpFile;
-const zenodoCreateRecordTemplatePath = 'zenodo-cli/template.json';
-exports.zenodoCreateRecordTemplatePath = zenodoCreateRecordTemplatePath;
-*/
 // -------------------------- main ---------------------------------------
 
-const testresult = zotzenlib.create();
-console.log(testresult)
-//let myarg = ["a"]
-//console.log(JSON.stringify(zotzenLib.create(myarg)))
-
-// --- main ---
 const args = getArguments();
 try {
   if (args.func) {
