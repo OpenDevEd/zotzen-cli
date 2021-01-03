@@ -4,13 +4,17 @@
 // import * as argparse from 'argparse';
 const { ArgumentParser } = require('argparse');
 
-const zotzenLib = require('zotzen-lib')
+// PRODUCTION: Load library
+//const zotzenlib = require("zotzen-lib");
+// TESTING: Load locally for testing
+const zotzenlib = require("../zotzen-lib/index");
+
+//const zotzenLib = require('zotzen-lib')
 //import * as zotzenLib from 'zotzen-lib';
 
-let myarg = ["a"]
-console.log(JSON.stringify(zotzenLib.create(myarg)))
-
-
+const { 
+  zotzenInit,
+ } = require("./zotzen-lib");
 
 
 function getArguments() {
@@ -30,12 +34,14 @@ function getArguments() {
   });
   parser.add_argument(
     "--verbose", {
-    "action": "store_false",
+    "action": "store_true",
+    "default": false,
     "help": "Run in verbose mode"
   });
   parser.add_argument(
     '--debug', {
     action: 'store_true',
+    "default": false,
     help: 'Enable debug logging',
   });
 
@@ -75,7 +81,7 @@ function getArguments() {
     "create", {
     "help": "Create a new pair of Zotero/Zenodo entries. Note: If you already have a Zotero item, use 'link' instead. If you have a Zenodo item already, but not Zotero item, make a zotero item in the Zotero application and also use 'link'."
   });
-  parser_create.set_defaults({ "func": zotzenCreate });
+  parser_create.set_defaults({ "func": zotzenlib.create });
   parser_create.add_argument('--group', {
     "nargs": 1,
     help: 'Group ID for which the new item Zotero is to be created. (Can be provided via Zotero config file.)',
@@ -132,7 +138,7 @@ function getArguments() {
     "link", {
     "help": "Link Zotero item with a Zenodo item, or generate a missing item."
   });
-  parser_link.set_defaults({ "func": zotzenLink });
+  parser_link.set_defaults({ "func": zotzenlib.link });
   parser_link.add_argument(
     "id", {
     "nargs": 2,
@@ -143,7 +149,7 @@ function getArguments() {
     "push", {
     "help": "Move/synchronise Zotero data to Zenodo."
   });
-  parser_push.set_defaults({ "func": zotzenPush });
+  parser_push.set_defaults({ "func": zotzenlib.push });
   parser_push.add_argument(
     "id", {
     "nargs": "*",
@@ -173,6 +179,7 @@ function getArguments() {
 }
 
 // TODO: These constants need to be replaced with calls to the API
+/*
 const zoteroPrefix = 'node bin/zotero-cli.js';
 exports.zoteroPrefix = zoteroPrefix;
 const zenodoPrefix = 'python zenodo-cli.py';
@@ -187,15 +194,22 @@ const zenodoTmpFile = 'zenodo-cli/tmp';
 exports.zenodoTmpFile = zenodoTmpFile;
 const zenodoCreateRecordTemplatePath = 'zenodo-cli/template.json';
 exports.zenodoCreateRecordTemplatePath = zenodoCreateRecordTemplatePath;
-
+*/
 // -------------------------- main ---------------------------------------
 
+const testresult = zotzenlib.create();
+console.log(testresult)
+//let myarg = ["a"]
+//console.log(JSON.stringify(zotzenLib.create(myarg)))
 
 // --- main ---
+const args = getArguments();
 try {
-  const args = getArguments();
   if (args.func) {
-    args.func(args)
+    const result = args.func(args)
+    if (args.verbose) {
+      console.log(JSON.stringify(result))
+    }
   } else {
     console.log("Error in command line arguments: specify one verb.")
   }
