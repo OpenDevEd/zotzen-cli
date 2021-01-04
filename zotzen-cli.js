@@ -178,9 +178,10 @@ function getArguments() {
 const args = getArguments();
 try {
   if (args.func) {
+    console.log("Action: "+args.func.name)
     const result = args.func(args)
     if (args.verbose) {
-      console.log(JSON.stringify(result))
+      console.log("Result: "+JSON.stringify(result))
     }
   } else {
     console.log("Error in command line arguments: specify one verb.")
