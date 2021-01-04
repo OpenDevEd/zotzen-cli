@@ -32,7 +32,7 @@
     "opn": "^6.0.0",
     "prompt": "^1.0.0",
     "request": "^2.34",
-    "zenodo-lib": "^1.0.2",
-    "zotzen-lib": "^1.0.12"
+    "zenodo-lib": "^1.0.5",
+    "zotzen-lib": "^1.0.13"
   }
 }
