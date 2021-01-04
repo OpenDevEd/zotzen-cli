@@ -1,27 +1,37 @@
 {
   "name": "zotzen-cli",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Command line utility to move data between Zotero and Zenodo",
   "main": "zotzen-cli.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node zotzen-cli.js"
+    "start": "node zotzen-cli.js",
+    "prepare": "echo \"prepare\"",
+    "version:old": "git add -A src",
+    "postversion": "git push && git push --tags",
+    "publish:patch": "npm version patch; npm publish; git push --tags",
+    "publish:minor": "npm version minor; npm publish; git push --tags",
+    "publish:major": "npm version major; npm publish; git push --tags"
   },
+  "files": [
+    "build/*"
+  ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/edtechhub/zotzen.git"
+    "url": "git+https://github.com/opendeved/zotzen-cli.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/edtechhub/zotzen/issues"
+    "url": "https://github.com/opendeved/zotzen-cli/issues"
   },
-  "homepage": "https://github.com/edtechhub/zotzen#readme",
+  "homepage": "https://github.com/opendeved/zotzen-cli#readme",
   "dependencies": {
     "argparse": "^2.0.1",
     "axios": "^0.21.1",
     "opn": "^6.0.0",
     "prompt": "^1.0.0",
-    "zotzen-lib": "^1.0.5"
+    "zenodo-lib": "^1.0.2",
+    "zotzen-lib": "^1.0.10"
   }
 }

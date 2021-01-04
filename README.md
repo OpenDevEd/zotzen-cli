@@ -269,3 +269,103 @@ Going from Zotero json to Zenodo json is not necessarily straight
 forward. We can make some compromises here, such as manually setting
 up the Zenodo item (or using zenodo.json) and only syncing the most
 common Zotero properties (title, author, abstract, date).
+
+
+# Further notes
+
+/*
+
+zotzen install
+zotzen create [previously 'new']
+zotzen link
+zotzen push
+
+// ---------------------------------------------------------
+zotzen -h 
+-h, --help Show this help message and exit.
+-v, --verbose 
+--debug Enable debug logging
+--zenodoconfig CONFIGFILE
+--zoteroconfig CONFIGFILE
+
+--show Show the zotero, zenodo item information
+--open Open the zotero and zenodo link after creation
+--dump
+
+create  Create a new pair of Zotero/Zenodo entries.
+init    install Install the config for Zotero and Zenodo.
+link
+push
+
+// ---------------------------------------------------------
+zotzen create -h 
+
+zotzen create [--title ... ... --json ...] --group ...
+Create a new zotero and a new zenodo record and link them.
+
+TODO: This option should have the same option as 'zenodo-cli create', e.g.
+--title TITLE Title of the new entries (for --new).
+--template TEMPLATE Path of the template to be used for creating Zenodo record.
+--json JSON A Zotero or Zenodo json file to be used for the Zotero entry
+
+Other than zenodo-cli, there is one more option:
+--group GROUP Group ID for which the new item Zotero is to be created
+
+
+// ---------------------------------------------------------
+zotzen link -h
+
+zotzen link zotero_id --newdoi
+zotzen link zotero_id zenodo_id
+
+Link an existing zotero item to a new zenodo record or link it with with an existing zenodo record in the DOI. 
+
+--newdoi Generate a DOI for an existing Zotero item.
+
+
+Use cases:
+1. You have a zotero item already, and you want to get a DOI for it. (--newdoi)
+2. You have a zotero item already and you have a zenodo item already, and you want to use the existing DOI for the zotero item.
+
+ERROR MESSAGES:
+
+(1) Running "zotzen link zotero_id --newdoi" where zotero_id already has a DOI, results in error message:
+
+The Zotero item has a Zenodo DOI already. If you really want to link
+this to a new record in Zenodo, please manually remove the DOI
+first. You can use the --open option to open the Zotero/Zenodo items
+to make adjustments.)
+
+(2a) Running "zotzen link zotero_id zenodo_id" where zotero_id already
+has a DOI (which is different from zenodo_id), results in error
+message above.  
+
+(2b) If the Zenodo item is linked against a different Zotero item,
+then:
+
+The Zenodo item is already linked with a different Zotero item. Do you
+want to proceed? y/n?
+
+(3) Running "zotzen link zotero_id zenodo_id" where zotero_id already
+has a DOI which MATCHES zenodo_id, and where zenodo_id is already
+linked to the same zotero item:
+
+The Zotero item and the Zenodo item are already linked.
+
+// ---------------------------------------------------------
+zotzen push -h
+
+zotzen push zotero_id
+--metadata      Sync metadata from zotero to zenodo. [Previously --sync]
+--attachments   Push Zotero attachments to Zenodo. [Rename to --push]
+--type TYPE     Type of the attachments to be pushed (e.g., PDF, DOCX, etc)
+--publish       Publish zenodo record. One or more positional arguments (zotero items)
+
+This option requires items to be linked already (e.g., using zotzen link).
+
+Error message if the item is unlinked: The Zotero item XYZ is not linked to a Zenodo item. Please link it first:
+
+zotzen link XYZ --newdoi
+zotzen link XYZ -123
+
+*/
