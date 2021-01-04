@@ -1,6 +1,6 @@
 {
   "name": "zotzen-cli",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Command line utility to move data between Zotero and Zenodo",
   "main": "zotzen-cli.js",
   "scripts": {
@@ -32,6 +32,7 @@
     "opn": "^6.0.0",
     "prompt": "^1.0.0",
     "zenodo-lib": "^1.0.2",
-    "zotzen-lib": "^1.0.10"
+    "zotzen-lib": "^1.0.10",
+    "request": "^2.34"
   }
 }
