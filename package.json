@@ -33,6 +33,6 @@
     "prompt": "^1.0.0",
     "request": "^2.34",
     "zenodo-lib": "^1.0.5",
-    "zotzen-lib": "^1.0.13"
+    "zotzen-lib": "^1.0.14"
   }
 }
