@@ -20,6 +20,10 @@
     "type": "git",
     "url": "git+https://github.com/opendeved/zotzen-cli.git"
   },
+  "bin": {
+    "zotzen-cli": "./zotzen-cli.js"
+  },
+  "preferGlobal": true,
   "author": "OpenDevEd",
   "license": "ISC",
   "bugs": {
