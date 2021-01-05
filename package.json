@@ -32,7 +32,6 @@
     "opn": "^6.0.0",
     "prompt": "^1.0.0",
     "request": "^2.34",
-    "zenodo-lib": "^1.0.6",
     "zotzen-lib": "^1.0.15"
   }
 }
