@@ -1,4 +1,5 @@
-# Introduction: Tools for working with the APIs of Zotero and Zenodo (zotzen)
+# zotzen-cli
+## Introduction: Tools for working with the APIs of Zotero and Zenodo (zotzen)
 
 This repository is part of a set of repositories, see here: https://github.com/orgs/OpenDevEd/teams/zotzen-team/repositories. Currently, this set contains a number of libraries
 - zenodo-lib https://github.com/opendeved/zenodo-lib, https://www.npmjs.com/package/zenodo-lib
@@ -13,7 +14,7 @@ The set contains some command-line tools:
 And a web application
 - zotzen-web https://github.com/opendeved/zotzen-web
 
-# zotzen
+# zotzen-cli
 
 A commandline tool to exchange data between Zotero and Zenodo, using the respective APIs. Developed by [@bjohas](https://github.com/bjohas) and [@a1diablo](https://github.com/a1diablo).
 
