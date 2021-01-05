@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node zotzen-cli.js",
+    "build": "echo \"build\"",
     "prepare": "echo \"prepare\"",
     "version:old": "git add -A src",
     "postversion": "git push && git push --tags",
