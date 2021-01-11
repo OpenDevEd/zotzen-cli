@@ -176,35 +176,28 @@ function getArguments() {
 // -------------------------- main ---------------------------------------
 
 async function run() {
+
   const args = getArguments();
-  try {
+
     console.log('TRY');
     if (args.func) {
       console.log("Action: "+args.func.name)
-      const result = await args.func(args)
-      if (args.verbose || args.debug) {
-	console.log("Result: "+JSON.stringify(result))
-	console.log("Done.")
-      }
-    } else {
-      console.log("Error in command line arguments: specify one verb.")
-    }
-    console.log('TRY-DONE');
-  } catch (ex) {
-    console.log('CATCH');
-    if (args.debug) {
-      console.log('DEBUG: ERROR');
-    }
-    if (args.debug) {
-      console.log(ex);
-    }
-  }
-};
-
+      await args.func(args).then(res=>{
+      
+          console.log("Result: "+JSON.stringify(res))
+          console.log("Done.")
+      
+    }).catch(e=>{
+      console.log(e);
+    })
+     
+      
+    };
+} 
 console.log("Start")
 run();
 console.log("End.")
-process.exit(0)
+//process.exit(0)
 
 
 
