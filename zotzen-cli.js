@@ -184,7 +184,7 @@ async function run() {
       console.log("Action: "+args.func.name)
       await args.func(args).then(res=>{
       
-          console.log("Result: "+JSON.stringify(res))
+        console.log("Result: "+JSON.stringify(res, null, 2))
           console.log("Done.")
       
     }).catch(e=>{
