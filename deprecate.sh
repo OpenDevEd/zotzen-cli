@@ -1,1 +1,1 @@
-npm deprecate zotzen-cli@"<=1.0.21" "your message"
+npm deprecate zotzen-cli@"<=1.0.22" "The zotzen-cli package has been deprecated. All functionality has been integrated in zotzen-lib - https://www.npmjs.com/package/zotzen-lib. Install zotzen-lib with -g to get the CLI."
